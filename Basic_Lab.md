@@ -58,13 +58,13 @@ Cài đặt gói		:		ftp
 -------------------------------------------------
 FTP Client2
 -------------------------------------------------
-IP adress		:		192.168.10
+IP adress		:		192.168.10.101
 Hostname		:		win7
 OS				:		windows 7
 ```
 
 <a name="3"></a>
-### 3.Các bước triển khai]
+### 3.Các bước triển khai
 - Cài đặt vsftpd trên CentOS 6.7
 - Cấu hình FTP
 - Tạo user và kiểm tra
@@ -91,7 +91,7 @@ service vsftpd stop #stop vsftpd
 ```
 
 <a name="42"></a>
-#### 4.2.Cấu hình FTP 
+#### 4.2.Cấu hình vsftpd
 - Sửa file cấu hình vsftpd
 ```sh
 vi /etc/vsftpd/vsftpd.conf
@@ -121,13 +121,6 @@ ftpd_banner=Welcome to LamTLU FTP service.
 # use localtime
 use_localtime=YES
 ```
-- Tạo thêm file chroot_list
-```sh
-vi /etc/vsftpd/chroot_list
-#thêm user không áp dục chroot_list
-CentOS
-win7
-```
 - Lưu lại và thoát, xong thì khởi động dịch vụ và cho phép khởi động cùng CentOS
 ```sh
  service vsftpd start
@@ -135,7 +128,7 @@ win7
 ``` 
 
 <a name="4.3"></a>
-#### 4.3.Tạo user và kiểm tra (#3)
+#### 4.3.Tạo user và kiểm tra 
 - Tạo folder nơi bạn muốn lưu trữ dữ liệu FTP.
 `mkdir /ftp`
 - Tạo user với thư mục đường dẫn /ftp
@@ -158,9 +151,11 @@ touch /ftp/win7/test1
 
 - Tắt Selinux và firewall
 ```sh
-setenforce 
+setenforce 0
+service iptables stop
 ```
 - Kiểm tra trên 2 client
+
 ##### a.CentOS
 - Trước khi kiểm tra, ta tiến hành cài đặt gói ftp cho client.
 `yum -y install ftp`
